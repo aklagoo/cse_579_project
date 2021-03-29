@@ -49,12 +49,12 @@ isCarrying(t, IR, IS, T+1) :- pickUp(IR, T),
 % ---------------------------------------------------------------------
 % Decrement suborder product counter and inventory by U on
 % deliver(IR, IO, II, U, T) if the following conditions are true:
-% 4. Order IO has been assigned the Picking Station IP.
+% 1. Order IO has been assigned the Picking Station IP.
 % 2. Picking station IP and robot IR are both at (X, Y).
-% 5. Robot IR is carrying shelf IS.
-% 6. Shelf IS carries USH units of product II.
-% 3. Suborder (IO, II) needs USUB units of product II.
-% 7. U <= USH, U <= USUB.
+% 3. Robot IR is carrying shelf IS.
+% 4. Shelf IS carries USH units of product II.
+% 5. Suborder (IO, II) needs USUB units of product II.
+% 6. U <= USH, U <= USUB.
 % ---------------------------------------------------------------------
 suborder(IO, II, USUB - U, T+1) :- deliver(IR, IO, II, U, T),
         order(IO, IP),
@@ -73,4 +73,13 @@ inventory(IS, II, USH - U, T+1) :- deliver(IR, IO, II, U, T),
 % =====================================================================
 % D. PUT DOWN
 % ---------------------------------------------------------------------
-% 
+% Reset isCarrying on putDown(IR, T) if:
+% 1. Robot IR is at position (X, Y).
+% 2. Robot IR is carrying shelf IS.
+% 3. Location (X, Y) is not a highway.
+% ---------------------------------------------------------------------
+isCarrying(f, IR, IS, T+1) :- putDown(IR, T),
+        at(robot, IR, X, Y, T),
+        isCarrying(t, IR, IS, T),
+        not highway(X, Y),
+        robot(IR), shelf(IS).
