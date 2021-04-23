@@ -73,12 +73,13 @@ inventory(IS, II, USH - U, T+1) :- deliver(IR, IO, II, U, T),
 % =====================================================================
 % D. PUT DOWN
 % ---------------------------------------------------------------------
-% Set isCarrying to false on putDown(IR, T) if the following conditions
-% are true:
-% 1. Robot IR is at location (X, Y).
-% 2. Location (X, Y) is not a highway.
-% 3. Robot IR is carrying shelf IS.
+% Reset isCarrying on putDown(IR, T) if:
+% 1. Robot IR is at position (X, Y).
+% 2. Robot IR is carrying shelf IS.
+% 3. Location (X, Y) is not a highway.
+% ---------------------------------------------------------------------
 isCarrying(f, IR, IS, T+1) :- putDown(IR, T),
-        at(robot, IR, X, Y, T), not highway(X, Y),
+        at(robot, IR, X, Y, T),
         isCarrying(t, IR, IS, T),
+        not highway(X, Y),
         robot(IR), shelf(IS).
