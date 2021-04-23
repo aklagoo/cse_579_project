@@ -14,6 +14,7 @@
 {pickUp(IR, T)} :- robot(IR), T=0..t-1.
 {deliver(IR, IO, II, U, T)} :- robot(IR), order(IO, IP), product(II),
         umax(II, UMAX), U = 0..UMAX, T=0..t-1.
+{putDown(IR, T)} :- robot(IR), T=0..t-1.
 
 % =====================================================================
 % Law of Inertia for all entities
