@@ -28,20 +28,22 @@ shelf(IS) :- init(object(shelf, IS), value(at,pair(X,Y))).
 % 1. product(II), inventory(IS, II, U, T)
 % 2. order(IO, IP), suborder(IO, II, U, T)
 % ---------------------------------------------------------------------
-product(II) :- init(object(product, II), value(on, pair(IS, U))).
-inventory(IS, II, U, 0) :- init(object(product, II), value(on, pair(IS, U))).
-
 order(IO, IP) :- init(object(order, IO),value(pickingStation, IP)).
 suborder(IO, II, U, 0) :- init(object(order, IO), value(line, pair(II, U))).
+order_product_pair(IO, II) :- init(object(order, IO), value(line, pair(II, U))).
+
+product(II) :- init(object(product, II), value(on, pair(IS, U))).
+inventory(IS, II, U, 0) :- init(object(product, II), value(on, pair(IS, U))).
+shelf_product_pair(IS, II) :- init(object(product, II), value(on, pair(IS, U))).
 
 % =====================================================================
 % B. DATA INITIALIZATION
 % ---------------------------------------------------------------------
 % Define basic data.
 % ---------------------------------------------------------------------
-boolean(t; f).
+boolean(true; false).
 
 % ---------------------------------------------------------------------
 % Define flags.
 % ---------------------------------------------------------------------
-isCarrying(f, IR, IS, 0) :- robot(IR), shelf(IS).
+isCarrying(false, IR, IS, 0) :- robot(IR), shelf(IS).
