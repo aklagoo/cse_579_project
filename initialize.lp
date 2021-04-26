@@ -24,17 +24,18 @@ at(shelf, IS, X, Y, 0) :- init(object(shelf, IS), value(at,pair(X,Y))).
 shelf(IS) :- init(object(shelf, IS), value(at,pair(X,Y))).
 
 % ---------------------------------------------------------------------
-% We have 3 order objects:
+% We have 4 order objects:
 % 1. product(II), inventory(IS, II, U, T)
 % 2. order(IO, IP), suborder(IO, II, U, T)
 % ---------------------------------------------------------------------
+order_product_pair(IO, II) :- init(object(order, IO), value(line, pair(II, U))).
+shelf_product_pair(IS, II) :- init(object(product, II), value(on, pair(IS, U))).
+
 order(IO, IP) :- init(object(order, IO),value(pickingStation, IP)).
 suborder(IO, II, U, 0) :- init(object(order, IO), value(line, pair(II, U))).
-order_product_pair(IO, II) :- init(object(order, IO), value(line, pair(II, U))).
 
 product(II) :- init(object(product, II), value(on, pair(IS, U))).
 inventory(IS, II, U, 0) :- init(object(product, II), value(on, pair(IS, U))).
-shelf_product_pair(IS, II) :- init(object(product, II), value(on, pair(IS, U))).
 
 % =====================================================================
 % B. DATA INITIALIZATION
@@ -47,3 +48,8 @@ boolean(true; false).
 % Define flags.
 % ---------------------------------------------------------------------
 isCarrying(false, IR, IS, 0) :- robot(IR), shelf(IS).
+
+% ---------------------------------------------------------------------
+% Calculate maximum quantity limit for each product.
+% ---------------------------------------------------------------------
+umax(II, UMAX) :- UMAX = #sum{U, IS : inventory(IS, II, U, 0), shelf(IS)}, product(II).

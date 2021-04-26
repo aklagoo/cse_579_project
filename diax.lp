@@ -1,7 +1,7 @@
 % =====================================================================
 % DOMAIN INDEPENDENT AXIOMS
 % =====================================================================
-% Uniqueness constraints.
+% A. Uniqueness constraints.
 % ---------------------------------------------------------------------
 :- not 1{at(robot, IR, X, Y, T)}1, robot(IR), T=1..t.
 :- not 1{at(shelf, IS, X, Y, T)}1, shelf(IS), T=1..t.
@@ -11,7 +11,7 @@
 :- not 1{inventory(IS, II, U, T)}1, shelf_product_pair(IS, II), T=1..t.
 
 % =====================================================================
-% Actions are exogenous.
+% B. Actions are exogenous.
 % ---------------------------------------------------------------------
 {move(IR, DX, DY, T)} :- robot(IR), direction(DX, DY), T=0..t-1.
 {pickUp(IR, T)} :- robot(IR), T=0..t-1.
@@ -20,7 +20,7 @@
 {putDown(IR, T)} :- robot(IR), T=0..t-1.
 
 % =====================================================================
-% Law of Inertia for all entities
+% C. Law of Inertia for all entities.
 % ---------------------------------------------------------------------
 {at(robot, IR, X, Y, T+1)} :- robot(IR), at(robot, IR, X, Y, T),
         T = 0..t-1.
